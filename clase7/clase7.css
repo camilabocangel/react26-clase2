@@ -1,0 +1,15 @@
+.paragraph {
+  color: red;
+}
+
+.green {
+  background-color: green;
+}
+
+.forms label {
+  color: blue;
+}
+
+input[required] {
+  background-color: gray;
+}
