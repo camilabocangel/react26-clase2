@@ -1,0 +1,111 @@
+name: CI
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+
+permissions:
+    contents: read
+
+jobs:
+    lint:
+        name: Lint
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+            - name: Setup Node.js
+              uses: actions/setup-node@v7
+              with:
+                  node-version: "lts/*"
+            - name: Install dependencies
+              run: npm install
+            - name: Lint files
+              run: npm run lint
+            - name: Lint Files, Dependencies, & Exports
+              run: npm run lint:unused
+
+    format:
+        name: File Format
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+            - name: Setup Node.js
+              uses: actions/setup-node@v7
+              with:
+                  node-version: lts/*
+            - name: Install dependencies
+              run: npm install
+            - name: Prettier Check
+              run: npm run fmt:check
+
+    test:
+        name: Test
+        strategy:
+            matrix:
+                os: [ubuntu-latest]
+                node: [26.x, 24.x, 22.x, 20.x, "20.19.0"]
+                include:
+                    - os: windows-latest
+                      node: "lts/*"
+                    - os: macOS-latest
+                      node: "lts/*"
+        runs-on: ${{ matrix.os }}
+        steps:
+            - uses: actions/checkout@v7
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: ${{ matrix.node }}
+            - name: Install dependencies
+              run: npm install
+            - name: Run tests
+              run: npm run test:unit
+
+    test_types:
+        name: Test Types
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v7
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v7
+              with:
+                  node-version: "lts/*"
+
+            - name: Install Packages
+              run: npm install
+
+            - name: Test types (eslint-scope)
+              run: npm run test:types -w packages/eslint-scope
+
+            - name: Test types (eslint-visitor-keys)
+              run: npm run test:types -w packages/eslint-visitor-keys
+
+            - name: Test types (espree)
+              run: npm run test:types -w packages/espree
+
+            - name: Check dist types compile (TypeScript 5.3)
+              run: npm run test:types:5.3
+
+            - name: Check dist types compile (TypeScript 5.x)
+              run: npm run test:types:5.x
+
+            - name: Check dist types compile (TypeScript 7 preview)
+              run: npm run test:types:7.x
+
+    are-the-types-wrong:
+        name: Are the types wrong?
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+            - name: Setup Node.js
+              uses: actions/setup-node@v7
+              with:
+                  node-version: "lts/*"
+            - name: Install dependencies
+              run: npm install
+            - name: Are the types wrong?
+              run: npm run lint:types

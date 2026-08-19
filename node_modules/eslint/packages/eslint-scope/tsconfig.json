@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "files": ["lib/index.js"],
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "rootDir": "lib",
+    "outDir": "dist",
+    "noEmit": true
+  }
+}
