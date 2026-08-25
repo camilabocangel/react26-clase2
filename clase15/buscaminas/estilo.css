@@ -1,0 +1,42 @@
+body {
+    text-align: center;
+    font-family: system-ui, sans-serif;
+    background-color: rgb(30, 30, 30);
+    color: white;
+}
+
+
+
+#tablero {
+    margin: auto;
+    border: 2px solid rgb(255, 186, 186);
+    border-collapse: collapse;
+}
+
+td {
+    width: 50px;
+    height: 50px;
+    border: 2px solid gray;
+    background-color: rgb(255, 197, 197);
+    text-align: center;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+td:hover {
+    background-color: rgb(250, 224, 54);
+}
+
+.explosion {
+    background-color: orange;
+}
+
+.bomba {
+    background-color: rgb(180, 50, 50);
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
