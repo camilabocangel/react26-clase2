@@ -29,13 +29,13 @@ jobs:
       - name: Run Vite Build
         working-directory: clase18/contador
         run: npx vite build
+
+      - name: Configurar github pages
       
       - name: save zip
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v4
         with:
-          name: contador-build
           path: clase18/contador/dist
-      - name: Configurar github pages
         uses: actions/configure-pages@v5
       - name: Publicar
         uses: actions/deploy-pages@v4
