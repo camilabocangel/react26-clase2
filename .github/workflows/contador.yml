@@ -1,4 +1,5 @@
 name: contador
+
 on:
   push:
     branches:
@@ -13,6 +14,7 @@ permissions:
 jobs:
   run_vite:
     runs-on: ubuntu-latest
+
     steps:
       - name: Download Code
         uses: actions/checkout@v3
@@ -30,12 +32,13 @@ jobs:
         working-directory: clase18/contador
         run: npx vite build
 
-      - name: Configurar github pages
-      
-      - name: save zip
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Guardar artefacto
         uses: actions/upload-pages-artifact@v4
         with:
           path: clase18/contador/dist
-        uses: actions/configure-pages@v5
+
       - name: Publicar
         uses: actions/deploy-pages@v4
