@@ -1,0 +1,96 @@
+.juego {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 24px 16px;
+    outline: none;
+}
+
+.juego h1 {
+    margin: 0;
+}
+
+.marcador {
+    font-family: var(--mono);
+    color: var(--text-h);
+}
+
+/* tablero */
+.tablero {
+    border-collapse: collapse;
+    background: var(--code-bg);
+    border: 3px solid var(--accent-border);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.celda {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--border);
+}
+
+@media (max-width: 640px) {
+    .celda {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+.cabeza {
+    background: #53143c;
+    box-shadow: inset 0 0 0 3px #e8b6da;
+    border-radius: 26px;
+}
+
+.cuerpo {
+    background: #e8b6da;
+    border-radius: 26px;
+}
+
+.comida {
+    background:
+        radial-gradient(circle at center, #ef4444 0 38%, transparent 40%);
+}
+
+/* mensajes */
+.ayuda {
+    color: var(--text);
+    font-size: 15px;
+}
+
+.mensaje {
+    font-family: var(--heading);
+    font-size: 20px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 6px;
+}
+
+.mensaje.perdido {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.12);
+}
+
+.mensaje.ganado {
+    color: #16a34a;
+    background: rgba(22, 163, 74, 0.12);
+}
+
+.reiniciar {
+    font: inherit;
+    font-size: 16px;
+    color: var(--text-h);
+    background: var(--accent-bg);
+    border: 1px solid var(--accent-border);
+    border-radius: 6px;
+    padding: 8px 20px;
+    cursor: pointer;
+}
+
+.reiniciar:hover {
+    background: var(--accent);
+    color: #fff;
+}

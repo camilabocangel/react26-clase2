@@ -1,6 +1,9 @@
-name: contador
+name: serpiente
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -14,19 +17,19 @@ jobs:
 
     steps:
       - name: Download Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "24"
 
       - name: Install Dependencies
-        working-directory: clase18/contador
+        working-directory: examen/serpiente
         run: npm install
 
       - name: Run Vite Build
-        working-directory: clase18/contador
+        working-directory: examen/serpiente
         run: npx vite build
 
       - name: Configurar GitHub Pages
@@ -35,7 +38,7 @@ jobs:
       - name: Guardar artefacto
         uses: actions/upload-pages-artifact@v4
         with:
-          path: clase18/contador/dist
+          path: examen/serpiente/dist
 
       - name: Publicar
         uses: actions/deploy-pages@v4
