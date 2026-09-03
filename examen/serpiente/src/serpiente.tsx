@@ -42,7 +42,6 @@ export default function Serpiente() {
             columna: cabeza.columna + avanceColumna,
         };
 
-        // termina si la serpiente sale del tablero
         if (nuevaCabeza.fila < 0 || nuevaCabeza.fila >= FILAS ||
             nuevaCabeza.columna < 0 || nuevaCabeza.columna >= COLUMNAS) {
             setEstado('perdido');
@@ -50,10 +49,8 @@ export default function Serpiente() {
         }
 
         const come: boolean = nuevaCabeza.fila === comida.fila && nuevaCabeza.columna === comida.columna;
-        // si no come se elimina el ultimo segmento, asi el cuerpo sigue a la cabeza
         const cuerpo: Posicion[] = come ? serpiente : serpiente.slice(0, serpiente.length - 1);
 
-        // termina si la cabeza choca con su propio cuerpo
         const choca: boolean = cuerpo.some((segmento) => {
             return segmento.fila === nuevaCabeza.fila && segmento.columna === nuevaCabeza.columna;
         });
@@ -75,7 +72,6 @@ export default function Serpiente() {
         }
     };
 
-    // cada pulsacion de una flecha es un turno
     const manejarTecla = (evento: KeyboardEvent<HTMLDivElement>): void => {
         switch (evento.key) {
             case 'ArrowUp':

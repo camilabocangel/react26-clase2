@@ -11,7 +11,6 @@ type PropiedadesTablero = {
 };
 
 export default function Tablero({ serpiente, comida, filas, columnas }: PropiedadesTablero) {
-    // [0, 1, 2, ... 7] para poder usar map al generar filas y columnas
     const indicesFilas: number[] = Array.from({ length: filas }, (_, indice) => indice);
     const indicesColumnas: number[] = Array.from({ length: columnas }, (_, indice) => indice);
 
