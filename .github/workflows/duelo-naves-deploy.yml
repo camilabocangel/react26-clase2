@@ -1,0 +1,21 @@
+name: duelo-naves-deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "proyecto_final/**"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Disparar deploy en Render
+        run: curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+
+      - name: Esperar a que el nuevo deploy esté activo
+        run: sleep 60
+
+      - name: Verificar que la aplicación publicada responde
+        run: curl -fsS "${{ vars.RENDER_APP_URL }}" -o /dev/null

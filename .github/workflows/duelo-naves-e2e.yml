@@ -1,0 +1,48 @@
+name: duelo-naves-e2e
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "proyecto_final/**"
+  workflow_dispatch:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Dependencies (frontend)
+        working-directory: proyecto_final/proyectoFinal
+        run: npm install
+
+      - name: Install Dependencies (backend)
+        working-directory: proyecto_final/backend
+        run: npm install
+
+      - name: Install Dependencies (e2e)
+        working-directory: proyecto_final/e2e
+        run: npm install
+
+      - name: Install Playwright browsers
+        working-directory: proyecto_final/e2e
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E tests (headless)
+        working-directory: proyecto_final/e2e
+        run: npx playwright test
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: proyecto_final/e2e/playwright-report
+          retention-days: 15

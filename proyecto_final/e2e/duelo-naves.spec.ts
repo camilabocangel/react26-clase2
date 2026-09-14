@@ -1,0 +1,40 @@
+import { test, expect } from '@playwright/test';
+
+test('pantalla de inicio muestra el título y las instrucciones', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.getByRole('heading', { name: 'Duelo de Naves' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Jugar' })).toBeVisible();
+});
+
+test('al jugar, el backend crea la partida y muestra a ambos jugadores', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Jugar' }).click();
+
+    await expect(page.getByText('Ronda 1')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Jugador 1' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Jugador 2' })).toBeVisible();
+});
+
+test('una acción inválida es rechazada por el backend', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Jugar' }).click();
+    await expect(page.getByText('Ronda 1')).toBeVisible();
+
+    // Ningún jugador tiene energía todavía: atacar debe ser rechazado por el servidor.
+    await page.getByRole('button', { name: 'Atacar' }).click();
+    await page.getByRole('button', { name: 'Atacar' }).click();
+
+    await expect(page.getByText(/no tiene suficiente energía/)).toBeVisible();
+});
+
+test('una ronda válida se resuelve con el backend y actualiza la energía en pantalla', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Jugar' }).click();
+    await expect(page.getByText('Ronda 1')).toBeVisible();
+
+    await page.getByRole('button', { name: 'Cargar' }).click();
+    await page.getByRole('button', { name: 'Cargar' }).click();
+
+    await expect(page.getByText('Ambos jugadores se preparan.')).toBeVisible();
+    await expect(page.getByText('Energía: 25').first()).toBeVisible();
+});

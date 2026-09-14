@@ -1,0 +1,196 @@
+.cargando {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+}
+
+.duelo {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
+}
+
+.escena {
+    flex-grow: 1;
+    display: flex;
+    align-items: stretch;
+    padding: 24px;
+    gap: 16px;
+}
+
+.nave {
+    flex: 0 0 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-top: 24px;
+}
+
+.icono-nave {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+    border: 2px solid var(--accent-border);
+}
+
+.icono-jugador1 {
+    background: var(--energia);
+}
+
+.icono-jugador2 {
+    background: var(--peligro);
+}
+
+.barra {
+    width: 100%;
+}
+
+.barra-etiqueta {
+    font-size: 13px;
+    font-family: var(--mono);
+    color: var(--text);
+}
+
+.barra-fondo {
+    width: 100%;
+    height: 14px;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.barra-relleno {
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.barra-vida {
+    background: var(--vida);
+}
+
+.barra-energia {
+    background: var(--energia);
+}
+
+.campo-batalla {
+    position: relative;
+    flex-grow: 1;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--code-bg);
+}
+
+.proyectil {
+    position: absolute;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    background: var(--accent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.panel-control {
+    border-top: 1px solid var(--border);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+}
+
+.turno-actual {
+    font-family: var(--heading);
+    font-size: 18px;
+    color: var(--text-h);
+}
+
+.ayuda {
+    color: var(--text);
+    font-size: 14px;
+}
+
+.mensaje-ronda {
+    color: var(--text-h);
+    font-size: 15px;
+}
+
+.mensaje-error {
+    color: var(--peligro);
+    font-size: 15px;
+}
+
+.botones-accion {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.botones-accion button {
+    font: inherit;
+    font-size: 16px;
+    color: var(--text-h);
+    background: var(--accent-bg);
+    border: 1px solid var(--accent-border);
+    border-radius: 6px;
+    padding: 10px 22px;
+    cursor: pointer;
+}
+
+.botones-accion button:hover:not(:disabled) {
+    background: var(--accent);
+    color: #fff;
+}
+
+.botones-accion button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.resultado-final {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.mensaje-final {
+    font-family: var(--heading);
+    font-size: 22px;
+    color: var(--text-h);
+}
+
+.botones-final {
+    display: flex;
+    gap: 12px;
+}
+
+.boton-secundario {
+    background: transparent;
+}
+
+@media (max-width: 720px) {
+    .escena {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nave {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .campo-batalla {
+        width: 100%;
+        min-height: 80px;
+    }
+}

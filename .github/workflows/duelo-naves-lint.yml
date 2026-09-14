@@ -1,0 +1,51 @@
+name: duelo-naves-lint
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "proyecto_final/**"
+  workflow_dispatch:
+
+jobs:
+  lint_frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Dependencies
+        working-directory: proyecto_final/proyectoFinal
+        run: npm install
+
+      - name: Run ESLint
+        working-directory: proyecto_final/proyectoFinal
+        run: npm run lint
+
+  lint_backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Dependencies
+        working-directory: proyecto_final/backend
+        run: npm install
+
+      - name: Run ESLint
+        working-directory: proyecto_final/backend
+        run: npm run lint
+
+      - name: Run TypeScript typecheck
+        working-directory: proyecto_final/backend
+        run: npm run typecheck
