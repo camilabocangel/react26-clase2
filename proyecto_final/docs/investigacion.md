@@ -70,15 +70,21 @@ redeploya solo con cada push), se agregó el workflow `duelo-naves-deploy.yml`, 
 URL pública responda. Esto deja evidencia verificable en GitHub Actions de que el deploy se
 disparó y de que la aplicación quedó accesible.
 
-**Pendiente (requiere una cuenta de Render, que el asistente de IA no puede crear)**:
+**Estado**: el servicio ya está creado y publicado en <https://react26.onrender.com/>.
 
-1. Crear una cuenta en Render y un "Web Service" apuntando a este repositorio.
-2. Configurar el Build Command y el Start Command de arriba.
-3. Copiar la URL pública del servicio y guardarla como la variable de repositorio
-   `RENDER_APP_URL` en GitHub (Settings → Secrets and variables → Actions → Variables).
-4. Copiar el "Deploy Hook" del servicio (Settings del servicio en Render) y guardarlo como el
-   secreto de repositorio `RENDER_DEPLOY_HOOK_URL`.
-5. Actualizar el enlace de despliegue en el `README.md` una vez publicada la URL real.
+**Pendiente (requiere acceso a la configuración del repositorio en GitHub, que el asistente
+de IA no puede hacer por su cuenta)**:
+
+1. Copiar la URL pública del servicio (<https://react26.onrender.com/>) y guardarla como la
+   variable de repositorio `RENDER_APP_URL` en GitHub (Settings → Secrets and variables →
+   Actions → pestaña Variables).
+2. Copiar el "Deploy Hook" del servicio (Settings del servicio en Render) y guardarlo como el
+   secreto de repositorio `RENDER_DEPLOY_HOOK_URL` (misma pantalla, pestaña Secrets).
+
+Sin estos dos valores, el workflow `duelo-naves-deploy.yml` falla al intentar llamar al Deploy
+Hook — el sitio igual se sigue publicando solo, porque Render redeploya automáticamente con
+cada push gracias a su integración nativa con GitHub; lo que falta es que el workflow deje
+esa evidencia dentro de GitHub Actions.
 
 ## Registro del uso de IA
 

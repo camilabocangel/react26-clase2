@@ -102,7 +102,7 @@ Todas las rutas bajo `/api` reciben y devuelven JSON. Detalle completo con ejemp
 
 ## Despliegue
 
-Publicado en Render: **TODO — completar con la URL pública una vez creado el servicio.**
+Publicado en Render: **<https://react26.onrender.com/>**
 El procedimiento de publicación (Build Command, Start Command, variables) está documentado
 en [`docs/investigacion.md`](docs/investigacion.md).
 

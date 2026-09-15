@@ -35,7 +35,8 @@ type PropiedadesDueloNaves = {
     alVolverAlInicio: () => void;
 };
 
-const DURACION_MENSAJE_MS = 1800;
+const DURACION_MENSAJE_MS = 2200;
+const COSTO_ATAQUE = 30;
 
 export default function DueloNaves({ alVolverAlInicio }: PropiedadesDueloNaves) {
     const [partida, setPartida] = useState<Partida | null>(null);
@@ -109,6 +110,8 @@ export default function DueloNaves({ alVolverAlInicio }: PropiedadesDueloNaves) 
 
     const jugadorEnTurno = fase === 'esperando-jugador1' ? 1 : 2;
     const puedeElegir = fase === 'esperando-jugador1' || fase === 'esperando-jugador2';
+    const energiaJugadorEnTurno = jugadorEnTurno === 1 ? partida.jugador1.energia : partida.jugador2.energia;
+    const puedeAtacar = energiaJugadorEnTurno >= COSTO_ATAQUE;
 
     return (
         <div className="duelo">
@@ -122,6 +125,7 @@ export default function DueloNaves({ alVolverAlInicio }: PropiedadesDueloNaves) 
                                 ? 'Empate: ambas naves llegaron al límite de rondas igualadas.'
                                 : `Ganó el ${partida.ganador === 'jugador1' ? 'Jugador 1' : 'Jugador 2'}.`}
                         </p>
+                        {partida.ultimaRonda && <p className="mensaje-ronda">{partida.ultimaRonda.mensaje}</p>}
                         <div className="botones-final">
                             <button type="button" className="boton" onClick={crearPartida}>Jugar de nuevo</button>
                             <button type="button" className="boton boton-secundario" onClick={alVolverAlInicio}>Volver al inicio</button>
@@ -131,22 +135,36 @@ export default function DueloNaves({ alVolverAlInicio }: PropiedadesDueloNaves) 
                     <>
                         <p className="turno-actual">
                             Ronda {partida.ronda} — {fase === 'resolviendo'
-                                ? 'Resolviendo...'
-                                : `Jugador ${jugadorEnTurno}, elige tu acción`}
+                                ? 'Resolviendo la ronda...'
+                                : `Turno del Jugador ${jugadorEnTurno}`}
                         </p>
                         {jugadorEnTurno === 2 && fase === 'esperando-jugador2' && (
-                            <p className="ayuda">Pasa el dispositivo al Jugador 2.</p>
+                            <p className="ayuda">Jugador 1 ya eligió en secreto. Pasa el dispositivo al Jugador 2.</p>
                         )}
-                        {partida.ultimaRonda && fase !== 'esperando-jugador1' && (
-                            <p className="mensaje-ronda">{partida.ultimaRonda.mensaje}</p>
+                        {puedeElegir && !puedeAtacar && (
+                            <p className="aviso-energia">
+                                Jugador {jugadorEnTurno} tiene {energiaJugadorEnTurno} de energía: le faltan {COSTO_ATAQUE - energiaJugadorEnTurno} para poder atacar.
+                            </p>
                         )}
-                        {error && <p className="mensaje-error">{error}</p>}
+                        {error && <p className="mensaje-error">⚠ {error}</p>}
 
                         <div className="botones-accion">
-                            <button type="button" disabled={!puedeElegir} onClick={() => elegirAccion('atacar')}>Atacar</button>
-                            <button type="button" disabled={!puedeElegir} onClick={() => elegirAccion('defender')}>Defender</button>
-                            <button type="button" disabled={!puedeElegir} onClick={() => elegirAccion('cargar')}>Cargar</button>
+                            <button type="button" disabled={!puedeElegir} onClick={() => elegirAccion('atacar')}>
+                                Atacar<span className="costo">-30 energía</span>
+                            </button>
+                            <button type="button" disabled={!puedeElegir} onClick={() => elegirAccion('defender')}>
+                                Defender<span className="costo">bloquea el daño</span>
+                            </button>
+                            <button type="button" disabled={!puedeElegir} onClick={() => elegirAccion('cargar')}>
+                                Cargar<span className="costo">+25 energía</span>
+                            </button>
                         </div>
+
+                        {partida.ultimaRonda && (
+                            <p className="ronda-anterior">
+                                <strong>Ronda anterior:</strong> {partida.ultimaRonda.mensaje}
+                            </p>
+                        )}
                     </>
                 )}
             </div>

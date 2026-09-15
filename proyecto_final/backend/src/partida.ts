@@ -126,7 +126,14 @@ export const jugarRonda = (
         danioAJugador2,
         criticoContraJugador1,
         criticoContraJugador2,
-        mensaje: construirMensaje(accionJugador1, accionJugador2, danioAJugador1, danioAJugador2),
+        mensaje: construirMensaje(
+            accionJugador1,
+            accionJugador2,
+            danioAJugador1,
+            danioAJugador2,
+            criticoContraJugador1,
+            criticoContraJugador2,
+        ),
     };
 
     definirSiTermino(partida);
@@ -137,19 +144,26 @@ export const jugarRonda = (
     return { ok: true, partida };
 };
 
+const describirAccion = (nombre: string, accion: Accion, danioHecho: number, fueCritico: boolean): string => {
+    if (accion === 'cargar') { return `${nombre} carga energía.`; }
+    if (accion === 'defender') { return `${nombre} se defiende.`; }
+    if (danioHecho > 0) {
+        return `${nombre} ataca e inflige ${danioHecho} de daño${fueCritico ? ' (¡golpe crítico!)' : ''}.`;
+    }
+    return `${nombre} ataca, pero el rival bloquea el golpe.`;
+};
+
 const construirMensaje = (
     accionJugador1: Accion,
     accionJugador2: Accion,
     danioAJugador1: number,
     danioAJugador2: number,
+    criticoContraJugador1: boolean,
+    criticoContraJugador2: boolean,
 ): string => {
-    const partes: string[] = [];
-    if (danioAJugador2 > 0) { partes.push(`Jugador 1 golpea por ${danioAJugador2}.`); }
-    if (accionJugador1 === 'atacar' && danioAJugador2 === 0) { partes.push('Jugador 2 bloquea el ataque.'); }
-    if (danioAJugador1 > 0) { partes.push(`Jugador 2 golpea por ${danioAJugador1}.`); }
-    if (accionJugador2 === 'atacar' && danioAJugador1 === 0) { partes.push('Jugador 1 bloquea el ataque.'); }
-    if (partes.length === 0) { partes.push('Ambos jugadores se preparan.'); }
-    return partes.join(' ');
+    const descripcionJugador1 = describirAccion('Jugador 1', accionJugador1, danioAJugador2, criticoContraJugador2);
+    const descripcionJugador2 = describirAccion('Jugador 2', accionJugador2, danioAJugador1, criticoContraJugador1);
+    return `${descripcionJugador1} ${descripcionJugador2}`;
 };
 
 const definirSiTermino = (partida: Partida): void => {

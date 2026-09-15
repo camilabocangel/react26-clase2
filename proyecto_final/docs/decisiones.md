@@ -100,3 +100,20 @@ Pantalla de resultado (reemplaza el panel inferior cuando `estado === "terminada
   `useEffect` que comparaba `partida.ultimaRonda`, y se cambió por el patrón recomendado por
   React de "ajustar el estado durante el renderizado" (comparar contra un valor guardado en
   `useState` directamente en el cuerpo del componente), que sí cumple esa regla de lint.
+- **Rediseño de claridad tras la primera prueba manual**: al jugar la primera versión, no se
+  entendía cuándo se podía atacar, la energía y la vida no quedaban claras, y el proyectil
+  cruzaba la pantalla tan rápido (unos 300 ms, moviéndose con `setInterval`) que el campo de
+  batalla se veía vacío casi todo el tiempo. Se hicieron cuatro cambios:
+  1. El proyectil pasó de moverse por `setInterval` a una animación CSS (`@keyframes`) de
+     1.1 segundos, disparada por un valor booleano (`ataqueJugador1Visible`) en vez de una
+     posición numérica — más simple de leer y mucho más lenta y visible.
+  2. Los botones muestran el costo o efecto de cada acción (`Atacar -30 energía`,
+     `Cargar +25 energía`, `Defender bloquea el daño`) en vez de dejar que el jugador lo
+     adivine o lo descubra por error.
+  3. Se agregó un aviso visible **antes** de elegir, si al jugador en turno le falta energía
+     para atacar (`"Jugador 1 tiene 0 de energía: le faltan 30 para poder atacar."`), sin
+     quitarle al backend su rol de validar: el botón sigue habilitado y, si igual se ataca sin
+     energía, el servidor lo sigue rechazando (ese es el caso de acción inválida del examen).
+  4. El resultado de la ronda anterior (`"Ronda anterior: Jugador 1 ataca e inflige 20 de
+     daño..."`) quedó visible de forma permanente en el panel, en vez de desaparecer a los
+     1.8 segundos, para no perder el hilo de lo que acaba de pasar.

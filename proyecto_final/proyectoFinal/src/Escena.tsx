@@ -8,70 +8,66 @@ type PropiedadesEscena = {
 type PropiedadesBarra = {
     etiqueta: string;
     valor: number;
+    maximo: number;
     tipo: 'vida' | 'energia';
 };
 
-function Barra({ etiqueta, valor, tipo }: PropiedadesBarra) {
+function Barra({ etiqueta, valor, maximo, tipo }: PropiedadesBarra) {
     return (
         <div className="barra">
-            <span className="barra-etiqueta">{etiqueta}: {valor}</span>
+            <span className="barra-etiqueta">{etiqueta}: {valor}/{maximo}</span>
             <div className="barra-fondo">
-                <div className={`barra-relleno barra-${tipo}`} style={{ width: `${valor}%` }}></div>
+                <div className={`barra-relleno barra-${tipo}`} style={{ width: `${(valor / maximo) * 100}%` }}></div>
             </div>
         </div>
     );
 }
 
+const DURACION_ANIMACION_MS = 1100;
+
 export default function Escena({ partida }: PropiedadesEscena) {
-    const [proyectilDerecha, setProyectilDerecha] = useState<number | null>(null);
-    const [proyectilIzquierda, setProyectilIzquierda] = useState<number | null>(null);
     const [rondaMostrada, setRondaMostrada] = useState<ResultadoRonda | null>(null);
+    const [ataqueJugador1Visible, setAtaqueJugador1Visible] = useState(false);
+    const [ataqueJugador2Visible, setAtaqueJugador2Visible] = useState(false);
 
     if (partida.ultimaRonda !== rondaMostrada) {
         setRondaMostrada(partida.ultimaRonda);
-        if (partida.ultimaRonda?.accionJugador1 === 'atacar') { setProyectilDerecha(0); }
-        if (partida.ultimaRonda?.accionJugador2 === 'atacar') { setProyectilIzquierda(100); }
+        if (partida.ultimaRonda?.accionJugador1 === 'atacar') { setAtaqueJugador1Visible(true); }
+        if (partida.ultimaRonda?.accionJugador2 === 'atacar') { setAtaqueJugador2Visible(true); }
     }
 
     useEffect(() => {
-        const movimiento = setInterval(() => {
-            setProyectilDerecha((actual) => {
-                if (actual === null) { return null; }
-                const siguiente = actual + 14;
-                return siguiente >= 100 ? null : siguiente;
-            });
-            setProyectilIzquierda((actual) => {
-                if (actual === null) { return null; }
-                const siguiente = actual - 14;
-                return siguiente <= 0 ? null : siguiente;
-            });
-        }, 45);
-        return () => clearInterval(movimiento);
-    }, []);
+        if (!ataqueJugador1Visible) { return; }
+        const temporizador = setTimeout(() => setAtaqueJugador1Visible(false), DURACION_ANIMACION_MS);
+        return () => clearTimeout(temporizador);
+    }, [ataqueJugador1Visible]);
+
+    useEffect(() => {
+        if (!ataqueJugador2Visible) { return; }
+        const temporizador = setTimeout(() => setAtaqueJugador2Visible(false), DURACION_ANIMACION_MS);
+        return () => clearTimeout(temporizador);
+    }, [ataqueJugador2Visible]);
 
     return (
         <div className="escena">
             <div className="nave nave-jugador1">
                 <h2>Jugador 1</h2>
                 <div className="icono-nave icono-jugador1"></div>
-                <Barra etiqueta="Vida" valor={partida.jugador1.vida} tipo="vida" />
-                <Barra etiqueta="Energía" valor={partida.jugador1.energia} tipo="energia" />
+                <Barra etiqueta="Vida" valor={partida.jugador1.vida} maximo={100} tipo="vida" />
+                <Barra etiqueta="Energía" valor={partida.jugador1.energia} maximo={100} tipo="energia" />
             </div>
 
             <div className="campo-batalla">
-                {proyectilDerecha !== null && (
-                    <div className="proyectil" style={{ left: `${proyectilDerecha}%` }}></div>
-                )}
-                {proyectilIzquierda !== null && (
-                    <div className="proyectil" style={{ left: `${proyectilIzquierda}%` }}></div>
-                )}
+                <div className="linea-central"></div>
+                {ataqueJugador1Visible && <div className="proyectil proyectil-derecha"></div>}
+                {ataqueJugador2Visible && <div className="proyectil proyectil-izquierda"></div>}
             </div>
 
             <div className="nave nave-jugador2">
                 <h2>Jugador 2</h2>
                 <div className="icono-nave icono-jugador2"></div>
-                <Barra etiqueta="Vida" valor={partida.jugador2.vida} tipo="vida" />
-                <Barra etiqueta="Energía" valor={partida.jugador2.energia} tipo="energia" />
+                <Barra etiqueta="Vida" valor={partida.jugador2.vida} maximo={100} tipo="vida" />
+                <Barra etiqueta="Energía" valor={partida.jugador2.energia} maximo={100} tipo="energia" />
             </div>
         </div>
     );
