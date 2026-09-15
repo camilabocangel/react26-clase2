@@ -11,33 +11,42 @@ test('al jugar, el backend crea la partida y muestra a ambos jugadores', async (
     await page.getByRole('button', { name: 'Jugar' }).click();
 
     await expect(page.getByText('Ronda 1')).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Jugador 1' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Jugador 2' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Jugador 1/ })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Jugador 2/ })).toBeVisible();
 });
 
-test('el juego avisa antes de intentar atacar sin energía, y el backend rechaza la acción', async ({ page }) => {
+test('se puede atacar desde la ronda 1 y, tras gastar toda la energía, el backend rechaza un nuevo ataque', async ({ page }) => {
     await page.goto('/');
     await page.getByRole('button', { name: 'Jugar' }).click();
     await expect(page.getByText('Ronda 1')).toBeVisible();
 
-    // Ningún jugador tiene energía todavía: la interfaz ya avisa antes de elegir.
-    await expect(page.getByText(/le faltan 30 para poder atacar/)).toBeVisible();
+    // Ambos jugadores empiezan con energía suficiente: no debería haber aviso todavía.
+    await expect(page.getByText(/le faltan/)).toHaveCount(0);
 
-    // Si de todas formas se intenta atacar, el servidor lo rechaza y lo explica.
-    await page.getByRole('button', { name: /^Atacar/ }).click();
-    await page.getByRole('button', { name: /^Atacar/ }).click();
+    // Ambos atacan: gastan toda su energía inicial.
+    await page.getByRole('button', { name: /Atacar/ }).click();
+    await page.getByRole('button', { name: /Atacar/ }).click();
+    await expect(page.getByText(/ataca e inflige/)).toBeVisible();
+    await expect(page.getByText('Ronda 2')).toBeVisible();
 
+    // Ahora sin energía: la interfaz avisa antes de elegir...
+    await expect(page.getByText(/le faltan 20 para poder atacar/)).toBeVisible();
+
+    // ...y si igual se intenta, el servidor lo rechaza.
+    await page.getByRole('button', { name: /Atacar/ }).click();
+    await page.getByRole('button', { name: /Atacar/ }).click();
     await expect(page.getByText(/no tiene suficiente energía/)).toBeVisible();
 });
 
-test('una ronda válida se resuelve con el backend y actualiza la energía en pantalla', async ({ page }) => {
+test('una ronda de carga se resuelve con el backend y actualiza la energía en pantalla', async ({ page }) => {
     await page.goto('/');
     await page.getByRole('button', { name: 'Jugar' }).click();
     await expect(page.getByText('Ronda 1')).toBeVisible();
 
-    await page.getByRole('button', { name: /^Cargar/ }).click();
-    await page.getByRole('button', { name: /^Cargar/ }).click();
+    await page.getByRole('button', { name: /Cargar/ }).click();
+    await page.getByRole('button', { name: /Cargar/ }).click();
 
     await expect(page.getByText(/Jugador 1 carga energía\. Jugador 2 carga energía\./)).toBeVisible();
-    await expect(page.getByText('Energía: 25/100').first()).toBeVisible();
+    // Energía inicial (20) + lo que da cargar (25) = 45.
+    await expect(page.getByText('Energía: 45/100').first()).toBeVisible();
 });

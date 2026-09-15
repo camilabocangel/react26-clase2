@@ -5,20 +5,22 @@ Todas las rutas están bajo `/api`. Todas las respuestas son JSON.
 
 ## POST /api/partidas
 
-Crea una partida nueva con el estado inicial (100 de vida, 0 de energía, ronda 1).
+Crea una partida nueva con el estado inicial (100 de vida, 20 de energía para cada jugador,
+ronda 1). Se arranca con algo de energía para que se pueda atacar desde la primera ronda sin
+tener que esperar varios turnos cargando.
 
 **Entrada**: sin cuerpo.
 
-**Salida** (201 Created):
+**Salida** (201 Created), capturada con `curl` contra el servidor real:
 
 ```json
 {
-  "id": "5yqjnqb",
+  "id": "tyer0cn",
   "ronda": 1,
   "estado": "jugando",
   "ganador": null,
-  "jugador1": { "vida": 100, "energia": 0 },
-  "jugador2": { "vida": 100, "energia": 0 },
+  "jugador1": { "vida": 100, "energia": 20 },
+  "jugador2": { "vida": 100, "energia": 20 },
   "ultimaRonda": null
 }
 ```
@@ -51,16 +53,18 @@ la ronda en un solo paso.
 
 `accionJugador1` y `accionJugador2` deben ser `"atacar"`, `"defender"` o `"cargar"`.
 
-**Salida** (200 OK): partida actualizada, con `ultimaRonda` describiendo lo que pasó:
+**Salida** (200 OK): partida actualizada, con `ultimaRonda` describiendo lo que pasó. Ejemplo
+real (Jugador 1 atacó, Jugador 2 se defendió — por eso no hubo daño y a Jugador 1 le bajó la
+energía en 20 igual):
 
 ```json
 {
-  "id": "5yqjnqb",
+  "id": "tyer0cn",
   "ronda": 2,
   "estado": "jugando",
   "ganador": null,
   "jugador1": { "vida": 100, "energia": 0 },
-  "jugador2": { "vida": 80, "energia": 25 },
+  "jugador2": { "vida": 100, "energia": 20 },
   "ultimaRonda": {
     "accionJugador1": "atacar",
     "accionJugador2": "defender",
@@ -68,7 +72,7 @@ la ronda en un solo paso.
     "danioAJugador2": 0,
     "criticoContraJugador1": false,
     "criticoContraJugador2": false,
-    "mensaje": "Jugador 2 bloquea el ataque."
+    "mensaje": "Jugador 1 ataca, pero el rival bloquea el golpe. Jugador 2 se defiende."
   }
 }
 ```

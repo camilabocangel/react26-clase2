@@ -15,7 +15,7 @@ proyectil que viaja de una nave a la otra y actualiza las barras de vida y energ
 
 Cada jugador elige entre tres acciones con consecuencias distintas:
 
-- **Atacar**: gasta 30 de energía e inflige daño al rival, salvo que este se haya defendido.
+- **Atacar**: gasta 20 de energía e inflige daño al rival, salvo que este se haya defendido.
 - **Defender**: no gasta energía, pero bloquea por completo el daño que reciba esa ronda.
 - **Cargar**: no ataca, mientras recupera energía para poder atacar en una ronda futura.
 

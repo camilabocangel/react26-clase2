@@ -27,7 +27,9 @@ es quien crea la partida, valida cada acción, calcula el resultado de cada rond
 factor aleatorio de golpe crítico) y decide cuándo termina la partida. En producción, y
 también al ejecutar `npm start` en `backend/`, Express sirve el frontend ya compilado
 (`proyectoFinal/dist`) además de la API, por lo que todo corre en el mismo dominio y puerto.
-Ver el detalle de responsabilidades en [`docs/reglas.md`](docs/reglas.md).
+Ver el detalle de responsabilidades en [`docs/reglas.md`](docs/reglas.md), y una guía línea
+por línea de dónde ocurre cada mecánica (resta de vida, carga de energía, golpe crítico, etc.)
+en [`docs/explicacion-tecnica.md`](docs/explicacion-tecnica.md) — pensada para la defensa.
 
 ## Instalación y ejecución en desarrollo
 

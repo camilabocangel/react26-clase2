@@ -26,9 +26,9 @@ export type Partida = {
 };
 
 const VIDA_INICIAL = 100;
-const ENERGIA_INICIAL = 0;
+const ENERGIA_INICIAL = 20;
 const ENERGIA_MAXIMA = 100;
-const COSTO_ATAQUE = 30;
+const COSTO_ATAQUE = 20;
 const DANIO_BASE = 20;
 const DANIO_CRITICO = 35;
 const PROBABILIDAD_CRITICO = 0.25;

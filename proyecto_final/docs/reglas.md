@@ -2,9 +2,10 @@
 
 ## Reglas
 
-1. Ambos jugadores empiezan con 100 de vida y 0 de energía.
+1. Ambos jugadores empiezan con 100 de vida y 20 de energía (justo lo necesario para un
+   primer ataque, así no hay que esperar rondas enteras antes de poder hacer algo).
 2. Cada ronda, cada jugador elige una acción: `atacar`, `defender` o `cargar`.
-3. `atacar` cuesta 30 de energía. Si el jugador no tiene esa energía, el servidor rechaza la
+3. `atacar` cuesta 20 de energía. Si el jugador no tiene esa energía, el servidor rechaza la
    ronda completa y no cambia el estado (caso de acción inválida).
 4. Si un jugador ataca y el rival **no** eligió `defender`, el rival recibe daño: 20 de daño
    normal, o 35 si el servidor calcula un golpe crítico (25% de probabilidad, decidido con

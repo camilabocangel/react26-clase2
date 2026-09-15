@@ -13,9 +13,10 @@ type PropiedadesBarra = {
 };
 
 function Barra({ etiqueta, valor, maximo, tipo }: PropiedadesBarra) {
+    const icono = tipo === 'vida' ? '❤️' : '⚡';
     return (
         <div className="barra">
-            <span className="barra-etiqueta">{etiqueta}: {valor}/{maximo}</span>
+            <span className="barra-etiqueta">{icono} {etiqueta}: {valor}/{maximo}</span>
             <div className="barra-fondo">
                 <div className={`barra-relleno barra-${tipo}`} style={{ width: `${(valor / maximo) * 100}%` }}></div>
             </div>
@@ -51,21 +52,21 @@ export default function Escena({ partida }: PropiedadesEscena) {
     return (
         <div className="escena">
             <div className="nave nave-jugador1">
-                <h2>Jugador 1</h2>
-                <div className="icono-nave icono-jugador1"></div>
+                <h2>🚀 Jugador 1</h2>
+                <div className="icono-nave icono-jugador1">🚀</div>
                 <Barra etiqueta="Vida" valor={partida.jugador1.vida} maximo={100} tipo="vida" />
                 <Barra etiqueta="Energía" valor={partida.jugador1.energia} maximo={100} tipo="energia" />
             </div>
 
             <div className="campo-batalla">
                 <div className="linea-central"></div>
-                {ataqueJugador1Visible && <div className="proyectil proyectil-derecha"></div>}
-                {ataqueJugador2Visible && <div className="proyectil proyectil-izquierda"></div>}
+                {ataqueJugador1Visible && <div className="proyectil proyectil-derecha">✨</div>}
+                {ataqueJugador2Visible && <div className="proyectil proyectil-izquierda">✨</div>}
             </div>
 
             <div className="nave nave-jugador2">
-                <h2>Jugador 2</h2>
-                <div className="icono-nave icono-jugador2"></div>
+                <h2>Jugador 2 🛸</h2>
+                <div className="icono-nave icono-jugador2">🛸</div>
                 <Barra etiqueta="Vida" valor={partida.jugador2.vida} maximo={100} tipo="vida" />
                 <Barra etiqueta="Energía" valor={partida.jugador2.energia} maximo={100} tipo="energia" />
             </div>

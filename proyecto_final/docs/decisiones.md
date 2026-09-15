@@ -117,3 +117,15 @@ Pantalla de resultado (reemplaza el panel inferior cuando `estado === "terminada
   4. El resultado de la ronda anterior (`"Ronda anterior: Jugador 1 ataca e inflige 20 de
      daño..."`) quedó visible de forma permanente en el panel, en vez de desaparecer a los
      1.8 segundos, para no perder el hilo de lo que acaba de pasar.
+- **Segunda ronda de ajustes (balance y estética)**: seguía sintiéndose muy lento llegar al
+  primer ataque (con 0 de energía inicial y un costo de 30, hacían falta dos rondas enteras de
+  `cargar` antes de poder atacar). Se rebalanceó `partida.ts`:
+  - `ENERGIA_INICIAL` pasó de 0 a 20 y `COSTO_ATAQUE` de 30 a 20 — con esto, cualquier jugador
+    puede atacar desde la ronda 1 si quiere, sin esperar. `GANANCIA_CARGAR` (25) se dejó igual,
+    así que sigue siendo mejor cargar que atacar todas las rondas seguidas.
+  - Visualmente, se reemplazaron los cuadrados lisos rojo/azul por una insignia circular con
+    degradado y un emoji (🚀 / 🛸) — sigue siendo CSS + texto plano, nada de imágenes ni
+    librerías nuevas, solo un poco más de personalidad. El proyectil pasó de ser un círculo
+    sólido a una chispa (✨) con `filter: drop-shadow`, y los botones de acción tienen un
+    color de borde distinto por acción (rojo para atacar, azul para defender, amarillo para
+    cargar) más un pequeño efecto al pasar el mouse (`transform: translateY(-3px)`).

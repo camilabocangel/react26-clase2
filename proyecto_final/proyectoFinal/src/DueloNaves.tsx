@@ -36,7 +36,7 @@ type PropiedadesDueloNaves = {
 };
 
 const DURACION_MENSAJE_MS = 2200;
-const COSTO_ATAQUE = 30;
+const COSTO_ATAQUE = 20;
 
 export default function DueloNaves({ alVolverAlInicio }: PropiedadesDueloNaves) {
     const [partida, setPartida] = useState<Partida | null>(null);
@@ -149,13 +149,16 @@ export default function DueloNaves({ alVolverAlInicio }: PropiedadesDueloNaves) 
                         {error && <p className="mensaje-error">⚠ {error}</p>}
 
                         <div className="botones-accion">
-                            <button type="button" disabled={!puedeElegir} onClick={() => elegirAccion('atacar')}>
-                                Atacar<span className="costo">-30 energía</span>
+                            <button type="button" className="boton-accion boton-atacar" disabled={!puedeElegir} onClick={() => elegirAccion('atacar')}>
+                                <span className="icono-accion">⚔️</span>
+                                Atacar<span className="costo">-20 energía</span>
                             </button>
-                            <button type="button" disabled={!puedeElegir} onClick={() => elegirAccion('defender')}>
+                            <button type="button" className="boton-accion boton-defender" disabled={!puedeElegir} onClick={() => elegirAccion('defender')}>
+                                <span className="icono-accion">🛡️</span>
                                 Defender<span className="costo">bloquea el daño</span>
                             </button>
-                            <button type="button" disabled={!puedeElegir} onClick={() => elegirAccion('cargar')}>
+                            <button type="button" className="boton-accion boton-cargar" disabled={!puedeElegir} onClick={() => elegirAccion('cargar')}>
+                                <span className="icono-accion">⚡</span>
                                 Cargar<span className="costo">+25 energía</span>
                             </button>
                         </div>
