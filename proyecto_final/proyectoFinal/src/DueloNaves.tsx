@@ -49,7 +49,7 @@ export default function DueloNaves({ alVolverAlInicio }: PropiedadesDueloNaves) 
         setError(null);
         setAccionJugador1(null);
         setFase('esperando-jugador1');
-        const respuesta = await fetch('/api/partidas', { method: 'POST' });
+        const respuesta = await fetch('/-/partidas', { method: 'POST' });
         const datos: Partida = await respuesta.json();
         setPartida(datos);
     };
@@ -122,7 +122,7 @@ export default function DueloNaves({ alVolverAlInicio }: PropiedadesDueloNaves) 
                     <div className="resultado-final">
                         <p className="mensaje-final">
                             {partida.ganador === 'empate'
-                                ? 'Empate: ambas naves llegaron al límite de rondas igualadas.'
+                                ? 'Empate: ambas naves llegaron al límite de turnos igualadas.'
                                 : `Ganó el ${partida.ganador === 'jugador1' ? 'Jugador 1' : 'Jugador 2'}.`}
                         </p>
                         {partida.ultimaRonda && <p className="mensaje-ronda">{partida.ultimaRonda.mensaje}</p>}
@@ -134,8 +134,8 @@ export default function DueloNaves({ alVolverAlInicio }: PropiedadesDueloNaves) 
                 ) : (
                     <>
                         <p className="turno-actual">
-                            Ronda {partida.ronda} — {fase === 'resolviendo'
-                                ? 'Resolviendo la ronda...'
+                            Turno {partida.ronda} — {fase === 'resolviendo'
+                                ? 'Resolviendo el turno...'
                                 : `Turno del Jugador ${jugadorEnTurno}`}
                         </p>
                         {jugadorEnTurno === 2 && fase === 'esperando-jugador2' && (
@@ -165,7 +165,7 @@ export default function DueloNaves({ alVolverAlInicio }: PropiedadesDueloNaves) 
 
                         {partida.ultimaRonda && (
                             <p className="ronda-anterior">
-                                <strong>Ronda anterior:</strong> {partida.ultimaRonda.mensaje}
+                                <strong>Turno anterior:</strong> {partida.ultimaRonda.mensaje}
                             </p>
                         )}
                     </>
